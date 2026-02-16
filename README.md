@@ -42,6 +42,25 @@ funções reutilizáveis**.
 
 ---
 
+## O que foi feito na Aula 3
+
+Na Aula 3, o projeto evoluiu do preparo de dados para um **pipeline completo de modelagem**.
+
+Foram implementados:
+
+- separação da lógica de modelagem em módulos Python
+- pipeline de pré-processamento e treino com scikit-learn
+- script de treino executável via linha de comando
+- avaliação padronizada de métricas de regressão
+- experiment tracking completo com MLflow
+- versionamento de modelos no MLflow Model Registry
+- testes automatizados com pytest
+  
+A partir deste ponto, o modelo deixa de depender do notebook e passa a ser tratado
+como um **artefato versionado e rastreável**.
+
+---
+
 ## Estrutura atual do projeto
 
 ```text
@@ -51,19 +70,30 @@ impacta_mlops/
 │ └── eda_diamonds.ipynb
 │
 ├── src/
-│ └── data.py
-│
-├── models/
+│ ├── data.py
+│ ├── model.py
+│ ├── __init__.py
+│ └── evaluate.py
 │
 ├── app/
 │
 ├── tests/
+│ ├── test_data.py
+│ ├── __init__.py
+│ ├── test_model.py
+│ └── test_train.py
+│
+├── models/
+│ └── diamond_price_model.joblib
 │
 ├── requirements.txt
+├── train.py
+├── pytest.ini
 ├── main.py
 ├── README.md
 └── .gitignore
 ```
+
 ---
 
 ## Módulo de dados
@@ -103,6 +133,7 @@ Com isso:
 Recomenda-se o uso de ambiente virtual.
 
 Criar e ativar o ambiente:
+
 ```bash
 python -m venv .venv
 .\.venv\Scripts\activate
@@ -112,4 +143,48 @@ Instalar dependências:
 ```bash
 pip install -r requirements.txt
 ```
+
 ---
+
+### – Pipeline de treino
+
+O treino do modelo é executado via script Python, sem dependência de notebook.
+Execução padrão:
+
+```bash
+python train.py
+```
+
+É possível ajustar hiperparâmetros via linha de comando:
+
+```bash
+python train.py --max_depth 3
+```
+
+Durante o treino, são registrados no MLflow:
+
+parâmetros
+métricas
+artefatos
+modelo treinado
+
+Isso permite comparar experimentos e versionar modelos de forma consistente.
+
+---
+
+### Testes automatizados
+O projeto possui testes básicos para garantir
+
+---
+
+Execução dos testes:
+
+```bash
+pytest
+```
+
+Os testes cobrem:
+carregamento e split dos dados
+construção do pipeline de modelagem
+execução completa do script de treino
+Esses testes ajudam a garantir que refatorações não quebrem o fluxo principal.

@@ -1,4 +1,14 @@
-.venv/
+# Python
 __pycache__/
-.ipynb_checkpoints/
 *.pyc
+
+# Jupyter
+.ipynb_checkpoints/
+
+# MLflow
+mlruns/
+mlartifacts/
+
+# Ambiente virtual
+venv/
+.venv/
